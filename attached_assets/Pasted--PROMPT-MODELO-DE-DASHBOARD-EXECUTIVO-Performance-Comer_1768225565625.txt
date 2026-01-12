@@ -1,0 +1,200 @@
+🎯 PROMPT — MODELO DE DASHBOARD EXECUTIVO
+Performance Comercial – Preço & Volume
+
+Contexto e papel da IA
+Você é um especialista sênior em BI, UX/UI e Storytelling de Dados, com experiência em dashboards executivos para Diretoria e Coordenação Comercial.
+Seu objetivo é criar um modelo de dashboard único, claro e orientado à decisão, seguindo as melhores práticas de visualização de dados.
+
+🧠 Objetivo do Dashboard
+
+Criar um dashboard executivo de Performance Comercial que permita:
+
+Avaliar rapidamente a performance geral
+
+Comparar Realizado vs Orçado vs Ano Anterior
+
+Identificar desvios
+
+Localizar oportunidades ou problemas por Segmento, Região e Embalagem
+
+Permitir aprofundamento apenas quando necessário
+
+👥 Público-alvo
+
+Diretoria
+
+Coordenação Comercial
+
+O dashboard deve ser:
+
+De leitura rápida (10–30 segundos para entendimento geral)
+
+Com profundidade sob demanda (drill / detalhe)
+
+📐 Estrutura do Dashboard (obrigatória)
+🔝 Header
+
+Título: Performance Comercial – Preço & Volume
+
+Data/hora da última atualização
+
+Toggle principal:
+
+Preço (R$/RTON)
+
+Volume (RTON)
+
+Filtro de tempo único (Data ou Ano/Mês)
+
+❌ Evitar excesso de filtros visíveis
+Filtros secundários devem ficar em painel lateral recolhível
+
+📌 Bloco 1 — KPIs Executivos (primeira dobra)
+
+Exibir apenas KPIs essenciais:
+
+Realizado
+
+% vs Orçado
+
+% vs Ano Anterior
+
+Margem Bruta (quando em Preço)
+
+Indicador de impacto comercial (ex: bonificação ou custo)
+
+Regras:
+
+Destaque visual claro
+
+Uso de cores apenas para status (bom / atenção / crítico)
+
+Evitar KPIs redundantes
+
+📊 Bloco 2 — Tendência Temporal
+
+Um único gráfico central de tendência:
+
+Alternável entre Diário / Semanal / Mensal
+
+Séries:
+
+Realizado
+
+Orçado
+
+Ano Anterior (linha pontilhada)
+
+Objetivo:
+
+Identificar tendência
+
+Detectar início de desvios
+
+Avaliar impacto de decisões comerciais ao longo do tempo
+
+🧭 Bloco 3 — Análise de Impacto
+
+Dois gráficos comparativos:
+
+Performance por Segmento
+
+Performance por Embalagem
+
+Regras:
+
+Ordenação automática por impacto
+
+Destaque para maiores desvios
+
+Sem excesso de cores decorativas
+
+🗺️ Bloco 4 — Visão Regional
+
+Tabela ou matriz executiva com:
+
+Região / Unidade
+
+Realizado
+
+% vs Orçado
+
+% vs Ano Anterior
+
+Regras:
+
+Sem scroll
+
+Top N + Outros
+
+Clique habilita drillthrough
+
+🔍 Drillthrough — Análise Detalhada
+
+Página separada para aprofundamento:
+
+Cliente
+
+Produto
+
+Embalagem
+
+Coordenador / Consultor
+
+Histórico detalhado
+
+Objetivo:
+
+Suporte à decisão tática
+
+Evitar poluir a visão executiva principal
+
+🎨 Diretrizes de UI / UX
+
+Design limpo, corporativo e moderno
+
+Uso moderado da cor institucional (apenas para destaque)
+
+Neutros para fundo
+
+Tipografia clara e hierarquia visual forte
+
+Espaçamento adequado entre blocos
+
+Evitar gauges excessivos e gráficos redundantes
+
+🧠 Storytelling implícito (obrigatório)
+
+O dashboard deve responder claramente, nesta ordem:
+
+Como estamos
+
+Quando mudou
+
+Onde impacta
+
+Onde agir
+
+🏁 Resultado Esperado
+
+Um dashboard único, que substitui múltiplas telas de:
+
+Diário
+
+Semanal
+
+Mensal
+
+YTD
+
+Preço e Volume separados
+
+Com:
+
+Leitura rápida para Diretoria
+
+Profundidade para Coordenação
+
+Baixa manutenção
+
+Alto valor decisório
