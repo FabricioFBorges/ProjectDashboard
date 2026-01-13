@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Performance Comercial — Preço & Volume</title>
+  <meta name="description" content="Painel/landing de performance comercial com foco em preço e volume. Projeto em HTML, CSS e JS." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <div class="bg-blur bg-blur-1" aria-hidden="true"></div>
+  <div class="bg-blur bg-blur-2" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <a class="brand" href="#inicio" aria-label="Ir para o início">
+        <span class="brand__dot"></span>
+        <span class="brand__text">Performance Comercial</span>
+      </a>
+
+      <nav class="nav" aria-label="Navegação principal">
+        <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="navMenu">
+          <span class="nav__toggle-line"></span>
+          <span class="nav__toggle-line"></span>
+          <span class="nav__toggle-line"></span>
+          <span class="sr-only">Abrir menu</span>
+        </button>
+
+        <ul id="navMenu" class="nav__menu">
+          <li><a class="nav__link" href="#visao">Visão</a></li>
+          <li><a class="nav__link" href="#kpis">KPIs</a></li>
+          <li><a class="nav__link" href="#analises">Análises</a></li>
+          <li><a class="nav__link" href="#sobre">Sobre</a></li>
+          <li><a class="nav__link nav__link--cta" href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="hero__content">
+          <div class="badge">
+            <span class="badge__pill">Preço • Volume • Desconto</span>
+            <span class="badge__sub">D-1 e leitura rápida</span>
+          </div>
+
+          <h1 class="hero__title">
+            Uma visão <span class="text-accent">clara</span> da performance comercial
+          </h1>
+
+          <p class="hero__desc">
+            Template em HTML/CSS/JS para você versionar no Git e evoluir: KPIs, cards, seções de análise,
+            layout responsivo e interações prontas (menu mobile, tabs, gráficos “mock” e export CSV).
+          </p>
+
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#kpis">Ver KPIs</a>
+            <a class="btn btn--ghost" href="#analises">Explorar análises</a>
+          </div>
+
+          <div class="hero__meta">
+            <div class="meta-pill">
+              <span class="meta-pill__label">Atualização</span>
+              <span class="meta-pill__value" id="lastUpdated">—</span>
+            </div>
+            <div class="meta-pill">
+              <span class="meta-pill__label">Fonte</span>
+              <span class="meta-pill__value">Gold / Analytics</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero__panel" aria-label="Prévia do painel">
+          <div class="panel">
+            <div class="panel__header">
+              <div>
+                <div class="panel__title">Resumo Executivo</div>
+                <div class="panel__subtitle">Preço x Volume | visão diária</div>
+              </div>
+              <div class="panel__controls">
+                <button class="iconbtn" type="button" id="btnExport" title="Exportar CSV">
+                  ⭳
+                </button>
+                <button class="iconbtn" type="button" id="btnTheme" title="Alternar tema">
+                  ◐
+                </button>
+              </div>
+            </div>
+
+            <div class="panel__kpis">
+              <article class="kpi">
+                <div class="kpi__label">Venda (R$)</div>
+                <div class="kpi__value" data-kpi="venda">—</div>
+                <div class="kpi__delta" data-delta="venda">—</div>
+              </article>
+
+              <article class="kpi">
+                <div class="kpi__label">Volume</div>
+                <div class="kpi__value" data-kpi="volume">—</div>
+                <div class="kpi__delta" data-delta="volume">—</div>
+              </article>
+
+              <article class="kpi">
+                <div class="kpi__label">Preço Médio</div>
+                <div class="kpi__value" data-kpi="preco">—</div>
+                <div class="kpi__delta" data-delta="preco">—</div>
+              </article>
+
+              <article class="kpi">
+                <div class="kpi__label">Desconto Médio</div>
+                <div class="kpi__value" data-kpi="desconto">—</div>
+                <div class="kpi__delta" data-delta="desconto">—</div>
+              </article>
+            </div>
+
+            <div class="panel__body">
+              <div class="tabs" role="tablist" aria-label="Abas de análise">
+                <button class="tab is-active" type="button" role="tab" aria-selected="true" data-tab="diario">Diário</button>
+                <button class="tab" type="button" role="tab" aria-selected="false" data-tab="semana">Semana</button>
+                <button class="tab" type="button" role="tab" aria-selected="false" data-tab="regional">Regional</button>
+              </div>
+
+              <div class="chart" id="chart">
+                <div class="chart__legend">
+                  <span class="dot dot--a"></span> Venda
+                  <span class="dot dot--b"></span> Volume
+                  <span class="dot dot--c"></span> Preço
+                </div>
+                <div class="chart__canvas" aria-hidden="true"></div>
+                <div class="chart__hint">Gráfico mock (substitua por Chart.js, ECharts ou seus dados reais)</div>
+              </div>
+
+              <div class="table">
+                <div class="table__header">
+                  <div class="table__title">Últimos 7 dias</div>
+                  <div class="table__search">
+                    <input id="search" type="search" placeholder="Filtrar..." />
+                  </div>
+                </div>
+
+                <div class="table__wrap" role="region" aria-label="Tabela de performance">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Data</th>
+                        <th class="right">Venda (R$)</th>
+                        <th class="right">Volume</th>
+                        <th class="right">Preço</th>
+                        <th class="right">Desc.%</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                  </table>
+                </div>
+
+                <p class="small muted">
+                  Dica: troque o dataset mock no <code>js/main.js</code> por uma chamada API (ex.: <code>fetch('/api')</code>)
+                  ou dados exportados do seu DW.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="visao" class="section">
+      <div class="container">
+        <div class="section__head">
+          <h2>Visão</h2>
+          <p class="muted">Uma página “porta de entrada” para seu dashboard: narrativa + indicadores + caminhos.</p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <h3>Leitura rápida (D-1)</h3>
+            <p>Logo cedo você vê venda, volume, preço e desconto, com variação vs. período anterior.</p>
+          </article>
+          <article class="card">
+            <h3>Cortes principais</h3>
+            <p>Pronto para evoluir com abas por dia da semana, regionais e projeção vs. realizado.</p>
+          </article>
+          <article class="card">
+            <h3>Governança</h3>
+            <p>Você controla versão, histórico e rollout via Git (PR, tags, releases).</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="kpis" class="section section--soft">
+      <div class="container">
+        <div class="section__head">
+          <h2>KPIs</h2>
+          <p class="muted">Cards prontos (reaproveite no seu layout do Power BI/Looker/Metabase).</p>
+        </div>
+
+        <div class="grid-4">
+          <div class="stat">
+            <div class="stat__label">Venda</div>
+            <div class="stat__value" data-kpi="venda">—</div>
+            <div class="stat__foot">Meta: <span id="metaVenda">—</span></div>
+          </div>
+          <div class="stat">
+            <div class="stat__label">Volume</div>
+            <div class="stat__value" data-kpi="volume">—</div>
+            <div class="stat__foot">Meta: <span id="metaVolume">—</span></div>
+          </div>
+          <div class="stat">
+            <div class="stat__label">Preço</div>
+            <div class="stat__value" data-kpi="preco">—</div>
+            <div class="stat__foot">Faixa saudável: <span>—</span></div>
+          </div>
+          <div class="stat">
+            <div class="stat__label">Desconto</div>
+            <div class="stat__value" data-kpi="desconto">—</div>
+            <div class="stat__foot">Alerta acima de: <span>—</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="analises" class="section">
+      <div class="container">
+        <div class="section__head">
+          <h2>Análises</h2>
+          <p class="muted">Seções “prontas” para você conectar com dados reais.</p>
+        </div>
+
+        <div class="grid-2">
+          <article class="card card--big">
+            <h3>Por dia da semana</h3>
+            <p>Monte rapidamente uma leitura de sazonalidade e compare com a semana anterior.</p>
+            <ul class="list">
+              <li>Segunda vs média 4 semanas</li>
+              <li>Domingo (mix e preço)</li>
+              <li>Outliers e feriados</li>
+            </ul>
+          </article>
+
+          <article class="card card--big">
+            <h3>Por regionais</h3>
+            <p>Estruture um bloco por região com ranking, tendência e alertas de preço/desconto.</p>
+            <ul class="list">
+              <li>Top + Bottom regionais</li>
+              <li>Variação WoW / MoM</li>
+              <li>Mapa (futuro)</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="sobre" class="section section--soft">
+      <div class="container">
+        <div class="section__head">
+          <h2>Sobre o projeto</h2>
+          <p class="muted">Pensado para ser simples de manter e fácil de evoluir.</p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <h3>Sem dependências</h3>
+            <p>Roda só com arquivos estáticos. Se quiser, você adiciona Vite/React depois.</p>
+          </article>
+          <article class="card">
+            <h3>Pronto para API</h3>
+            <p>Já tem um dataset mock e export CSV. Troque por <code>fetch</code> e pronto.</p>
+          </article>
+          <article class="card">
+            <h3>Dark/Light</h3>
+            <p>Toggle de tema com persistência no <code>localStorage</code>.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contato" class="section">
+      <div class="container">
+        <div class="cta">
+          <div>
+            <h2>Quer ligar isso no seu dado real?</h2>
+            <p class="muted">Me diga qual fonte você vai usar (CSV, API, Databricks SQL, etc.) que eu adapto o JS.</p>
+          </div>
+          <a class="btn btn--primary" href="#inicio">Voltar ao topo</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span class="muted">© <span id="year"></span> Performance Comercial</span>
+      <span class="muted">Feito em HTML/CSS/JS</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
