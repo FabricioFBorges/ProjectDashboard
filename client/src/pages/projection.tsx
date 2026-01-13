@@ -1,17 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
 import {
-  ArrowLeft,
   Calendar,
-  TrendingUp,
-  TrendingDown,
   Minus,
-  Filter,
   ArrowUpRight,
   ArrowDownRight,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { PageLayout } from "@/components/sidebar-nav";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
@@ -159,16 +154,11 @@ export default function ProjectionPage() {
   const atRisk = data.filter(r => r.risk === "high").length;
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-30 glass border-b border-border/50">
-        <div className="max-w-[1600px] mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link href="/">
-                <Button variant="ghost" size="icon" data-testid="button-back">
-                  <ArrowLeft className="w-4 h-4" />
-                </Button>
-              </Link>
+    <PageLayout>
+      <div className="min-h-screen bg-background">
+        <header className="sticky top-0 z-30 glass border-b border-border/50">
+          <div className="max-w-[1600px] mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-xl font-semibold tracking-tight">
                   <span className="text-gradient">Projeção</span> vs Orçado
@@ -177,98 +167,73 @@ export default function ProjectionPage() {
                   Aderência e antecipação de desvios
                 </p>
               </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Tabs value={viewBy} onValueChange={(v) => setViewBy(v as ViewBy)}>
-                <TabsList className="glass-light">
-                  <TabsTrigger value="regional" className="text-xs" data-testid="view-regional">
-                    Regional
-                  </TabsTrigger>
-                  <TabsTrigger value="unit" className="text-xs" data-testid="view-unit">
-                    Unidade
-                  </TabsTrigger>
-                  <TabsTrigger value="channel" className="text-xs" data-testid="view-channel">
-                    Canal
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
-              <Select defaultValue="2024-01">
-                <SelectTrigger className="w-40 glass-light text-xs" data-testid="select-period">
-                  <Calendar className="w-3.5 h-3.5 mr-2" />
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="2024-01">Janeiro 2024</SelectItem>
-                  <SelectItem value="2024-02">Fevereiro 2024</SelectItem>
-                  <SelectItem value="2024-03">Março 2024</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="flex items-center gap-3">
+                <Tabs value={viewBy} onValueChange={(v) => setViewBy(v as ViewBy)}>
+                  <TabsList className="glass-light">
+                    <TabsTrigger value="regional" className="text-xs" data-testid="view-regional">Regional</TabsTrigger>
+                    <TabsTrigger value="unit" className="text-xs" data-testid="view-unit">Unidade</TabsTrigger>
+                    <TabsTrigger value="channel" className="text-xs" data-testid="view-channel">Canal</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+                <Select defaultValue="2024-01">
+                  <SelectTrigger className="w-40 glass-light text-xs" data-testid="select-period">
+                    <Calendar className="w-3.5 h-3.5 mr-2" />
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="2024-01">Janeiro 2024</SelectItem>
+                    <SelectItem value="2024-02">Fevereiro 2024</SelectItem>
+                    <SelectItem value="2024-03">Março 2024</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <main className="max-w-[1600px] mx-auto px-6 py-6 space-y-6">
-        <section className="grid grid-cols-4 gap-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="glass rounded-xl p-5"
-          >
-            <p className="text-muted-foreground text-sm mb-1">Total Projetado</p>
-            <p className="text-2xl font-semibold">{formatCurrency(totalProjection)}</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="glass rounded-xl p-5"
-          >
-            <p className="text-muted-foreground text-sm mb-1">Total Orçado</p>
-            <p className="text-2xl font-semibold">{formatCurrency(totalBudget)}</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="glass rounded-xl p-5"
-          >
-            <p className="text-muted-foreground text-sm mb-1">Acima do Orçado</p>
-            <p className="text-2xl font-semibold status-positive">{aboveBudget} <span className="text-base text-muted-foreground font-normal">de {data.length}</span></p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="glass rounded-xl p-5"
-          >
-            <p className="text-muted-foreground text-sm mb-1">Em Risco</p>
-            <p className={`text-2xl font-semibold ${atRisk > 0 ? "status-negative" : "status-positive"}`}>
-              {atRisk} <span className="text-base text-muted-foreground font-normal">itens</span>
-            </p>
-          </motion.div>
-        </section>
+        <main className="max-w-[1600px] mx-auto px-6 py-6 space-y-6">
+          <section className="grid grid-cols-4 gap-4">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass rounded-xl p-5">
+              <p className="text-muted-foreground text-sm mb-1">Total Projetado</p>
+              <p className="text-2xl font-semibold">{formatCurrency(totalProjection)}</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass rounded-xl p-5">
+              <p className="text-muted-foreground text-sm mb-1">Total Orçado</p>
+              <p className="text-2xl font-semibold">{formatCurrency(totalBudget)}</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass rounded-xl p-5">
+              <p className="text-muted-foreground text-sm mb-1">Acima do Orçado</p>
+              <p className="text-2xl font-semibold status-positive">{aboveBudget} <span className="text-base text-muted-foreground font-normal">de {data.length}</span></p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass rounded-xl p-5">
+              <p className="text-muted-foreground text-sm mb-1">Em Risco</p>
+              <p className={`text-2xl font-semibold ${atRisk > 0 ? "status-negative" : "status-positive"}`}>
+                {atRisk} <span className="text-base text-muted-foreground font-normal">itens</span>
+              </p>
+            </motion.div>
+          </section>
 
-        <section className="flex items-center gap-4 text-xs">
-          <span className="text-muted-foreground">Legenda de risco:</span>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-green-500" />
-            <span>Baixo</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-yellow-500" />
-            <span>Médio</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-red-500" />
-            <span>Alto</span>
-          </div>
-        </section>
+          <section className="flex items-center gap-4 text-xs">
+            <span className="text-muted-foreground">Legenda de risco:</span>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full bg-green-500" />
+              <span>Baixo</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full bg-yellow-500" />
+              <span>Médio</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full bg-red-500" />
+              <span>Alto</span>
+            </div>
+          </section>
 
-        <section>
-          <ProjectionTable data={data} />
-        </section>
-      </main>
-    </div>
+          <section>
+            <ProjectionTable data={data} />
+          </section>
+        </main>
+      </div>
+    </PageLayout>
   );
 }

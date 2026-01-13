@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "wouter";
 import {
-  ArrowLeft,
   Calendar,
   Search,
   ChevronRight,
-  Users,
   Package,
   TrendingUp,
   TrendingDown,
@@ -15,6 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PageLayout } from "@/components/sidebar-nav";
 import {
   Select,
   SelectContent,
@@ -147,11 +145,7 @@ function ClientRow({ client, index }: { client: Client; index: number }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.03 }}
-    >
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.03 }}>
       <div
         className="grid grid-cols-8 gap-4 py-4 px-4 hover:bg-white/[0.02] cursor-pointer transition-colors items-center border-b border-border/30"
         onClick={() => setExpanded(!expanded)}
@@ -245,16 +239,11 @@ export default function ClientsPage() {
   const avgPrice = filteredClients.reduce((acc, c) => acc + c.price, 0) / filteredClients.length;
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-30 glass border-b border-border/50">
-        <div className="max-w-[1600px] mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link href="/">
-                <Button variant="ghost" size="icon" data-testid="button-back">
-                  <ArrowLeft className="w-4 h-4" />
-                </Button>
-              </Link>
+    <PageLayout>
+      <div className="min-h-screen bg-background">
+        <header className="sticky top-0 z-30 glass border-b border-border/50">
+          <div className="max-w-[1600px] mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-xl font-semibold tracking-tight">
                   Ficha de <span className="text-gradient">Clientes</span>
@@ -263,110 +252,91 @@ export default function ClientsPage() {
                   Análise detalhada por cliente e embalagem
                 </p>
               </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  placeholder="Buscar cliente..."
-                  className="pl-9 w-64 glass-light text-sm"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  data-testid="input-search"
-                />
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    placeholder="Buscar cliente..."
+                    className="pl-9 w-64 glass-light text-sm"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    data-testid="input-search"
+                  />
+                </div>
+                <Select value={segmentFilter} onValueChange={setSegmentFilter}>
+                  <SelectTrigger className="w-36 glass-light text-xs" data-testid="select-segment">
+                    <Filter className="w-3.5 h-3.5 mr-2" />
+                    <SelectValue placeholder="Segmento" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos</SelectItem>
+                    <SelectItem value="Varejo">Varejo</SelectItem>
+                    <SelectItem value="Atacado">Atacado</SelectItem>
+                    <SelectItem value="Food Service">Food Service</SelectItem>
+                    <SelectItem value="Indústria">Indústria</SelectItem>
+                    <SelectItem value="Exportação">Exportação</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select defaultValue="2024-01">
+                  <SelectTrigger className="w-40 glass-light text-xs" data-testid="select-period">
+                    <Calendar className="w-3.5 h-3.5 mr-2" />
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="2024-01">Janeiro 2024</SelectItem>
+                    <SelectItem value="2024-02">Fevereiro 2024</SelectItem>
+                    <SelectItem value="2024-03">Março 2024</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button variant="outline" size="sm" className="glass-light text-xs" data-testid="button-export">
+                  <Download className="w-3.5 h-3.5 mr-1.5" />
+                  Exportar
+                </Button>
               </div>
-              <Select value={segmentFilter} onValueChange={setSegmentFilter}>
-                <SelectTrigger className="w-36 glass-light text-xs" data-testid="select-segment">
-                  <Filter className="w-3.5 h-3.5 mr-2" />
-                  <SelectValue placeholder="Segmento" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Todos</SelectItem>
-                  <SelectItem value="Varejo">Varejo</SelectItem>
-                  <SelectItem value="Atacado">Atacado</SelectItem>
-                  <SelectItem value="Food Service">Food Service</SelectItem>
-                  <SelectItem value="Indústria">Indústria</SelectItem>
-                  <SelectItem value="Exportação">Exportação</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select defaultValue="2024-01">
-                <SelectTrigger className="w-40 glass-light text-xs" data-testid="select-period">
-                  <Calendar className="w-3.5 h-3.5 mr-2" />
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="2024-01">Janeiro 2024</SelectItem>
-                  <SelectItem value="2024-02">Fevereiro 2024</SelectItem>
-                  <SelectItem value="2024-03">Março 2024</SelectItem>
-                </SelectContent>
-              </Select>
-              <Button variant="outline" size="sm" className="glass-light text-xs" data-testid="button-export">
-                <Download className="w-3.5 h-3.5 mr-1.5" />
-                Exportar
-              </Button>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <main className="max-w-[1600px] mx-auto px-6 py-6 space-y-6">
-        <section className="grid grid-cols-4 gap-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="glass rounded-xl p-5"
-          >
-            <p className="text-muted-foreground text-sm mb-1">Total de Clientes</p>
-            <p className="text-2xl font-semibold">{filteredClients.length}</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="glass rounded-xl p-5"
-          >
-            <p className="text-muted-foreground text-sm mb-1">Volume Total</p>
-            <p className="text-2xl font-semibold">{totalVolume.toLocaleString()} <span className="text-sm text-muted-foreground font-normal">RTON</span></p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="glass rounded-xl p-5"
-          >
-            <p className="text-muted-foreground text-sm mb-1">Preço Médio</p>
-            <p className="text-2xl font-semibold">R$ {avgPrice.toFixed(2)}</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="glass rounded-xl p-5"
-          >
-            <p className="text-muted-foreground text-sm mb-1">Em Destaque</p>
-            <p className="text-2xl font-semibold status-positive">
-              {filteredClients.filter(c => c.varYoY >= 10).length}
-            </p>
-          </motion.div>
-        </section>
+        <main className="max-w-[1600px] mx-auto px-6 py-6 space-y-6">
+          <section className="grid grid-cols-4 gap-4">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass rounded-xl p-5">
+              <p className="text-muted-foreground text-sm mb-1">Total de Clientes</p>
+              <p className="text-2xl font-semibold">{filteredClients.length}</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass rounded-xl p-5">
+              <p className="text-muted-foreground text-sm mb-1">Volume Total</p>
+              <p className="text-2xl font-semibold">{totalVolume.toLocaleString()} <span className="text-sm text-muted-foreground font-normal">RTON</span></p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass rounded-xl p-5">
+              <p className="text-muted-foreground text-sm mb-1">Preço Médio</p>
+              <p className="text-2xl font-semibold">R$ {avgPrice.toFixed(2)}</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass rounded-xl p-5">
+              <p className="text-muted-foreground text-sm mb-1">Em Destaque</p>
+              <p className="text-2xl font-semibold status-positive">
+                {filteredClients.filter(c => c.varYoY >= 10).length}
+              </p>
+            </motion.div>
+          </section>
 
-        <section className="glass rounded-xl overflow-hidden">
-          <div className="grid grid-cols-8 gap-4 py-3 px-4 bg-card/80 border-b border-border/50 text-xs font-medium text-muted-foreground">
-            <div className="col-span-2">Cliente</div>
-            <div className="text-right">Volume Real</div>
-            <div className="text-right">Preço</div>
-            <div className="text-right">Projeção</div>
-            <div className="text-right">Var. M-1</div>
-            <div className="text-right">Var. AA</div>
-            <div className="text-right">Status</div>
-          </div>
-          <div className="max-h-[600px] overflow-y-auto scrollbar-thin">
-            {filteredClients.map((client, i) => (
-              <ClientRow key={client.id} client={client} index={i} />
-            ))}
-          </div>
-        </section>
-      </main>
-    </div>
+          <section className="glass rounded-xl overflow-hidden">
+            <div className="grid grid-cols-8 gap-4 py-3 px-4 bg-card/80 border-b border-border/50 text-xs font-medium text-muted-foreground">
+              <div className="col-span-2">Cliente</div>
+              <div className="text-right">Volume Real</div>
+              <div className="text-right">Preço</div>
+              <div className="text-right">Projeção</div>
+              <div className="text-right">Var. M-1</div>
+              <div className="text-right">Var. AA</div>
+              <div className="text-right">Status</div>
+            </div>
+            <div className="max-h-[600px] overflow-y-auto scrollbar-thin">
+              {filteredClients.map((client, i) => (
+                <ClientRow key={client.id} client={client} index={i} />
+              ))}
+            </div>
+          </section>
+        </main>
+      </div>
+    </PageLayout>
   );
 }

@@ -1,17 +1,14 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "wouter";
 import {
-  ArrowLeft,
   Calendar,
   ChevronRight,
-  ChevronDown,
   MapPin,
   TrendingUp,
   TrendingDown,
   Building2,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { PageLayout } from "@/components/sidebar-nav";
 import {
   Select,
   SelectContent,
@@ -111,11 +108,7 @@ function RegionalRow({ regional, index }: { regional: Regional; index: number })
   const diffProjectedPct = (diffProjected / regional.budget) * 100;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
-    >
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }}>
       <div
         className="grid grid-cols-6 gap-4 py-4 px-4 hover:bg-white/[0.02] cursor-pointer transition-colors items-center border-b border-border/30"
         onClick={() => setExpanded(!expanded)}
@@ -155,7 +148,7 @@ function RegionalRow({ regional, index }: { regional: Regional; index: number })
             transition={{ duration: 0.2 }}
             className="overflow-hidden bg-card/50"
           >
-            {regional.units.map((unit, i) => {
+            {regional.units.map((unit) => {
               const unitDiffPct = ((unit.realized - unit.budget) / unit.budget) * 100;
               const unitProjDiffPct = ((unit.projected - unit.budget) / unit.budget) * 100;
               return (
@@ -193,16 +186,11 @@ export default function RegionalPage() {
   const totalBudget = regionalData.reduce((acc, r) => acc + r.budget, 0);
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-30 glass border-b border-border/50">
-        <div className="max-w-[1600px] mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link href="/">
-                <Button variant="ghost" size="icon" data-testid="button-back">
-                  <ArrowLeft className="w-4 h-4" />
-                </Button>
-              </Link>
+    <PageLayout>
+      <div className="min-h-screen bg-background">
+        <header className="sticky top-0 z-30 glass border-b border-border/50">
+          <div className="max-w-[1600px] mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-xl font-semibold tracking-tight">
                   Análise por <span className="text-gradient">Regionais</span>
@@ -211,79 +199,65 @@ export default function RegionalPage() {
                   Performance por regional e unidade
                 </p>
               </div>
+              <div className="flex items-center gap-3">
+                <Select defaultValue="2024-01">
+                  <SelectTrigger className="w-40 glass-light text-xs" data-testid="select-period">
+                    <Calendar className="w-3.5 h-3.5 mr-2" />
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="2024-01">Janeiro 2024</SelectItem>
+                    <SelectItem value="2024-02">Fevereiro 2024</SelectItem>
+                    <SelectItem value="2024-03">Março 2024</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <Select defaultValue="2024-01">
-                <SelectTrigger className="w-40 glass-light text-xs" data-testid="select-period">
-                  <Calendar className="w-3.5 h-3.5 mr-2" />
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="2024-01">Janeiro 2024</SelectItem>
-                  <SelectItem value="2024-02">Fevereiro 2024</SelectItem>
-                  <SelectItem value="2024-03">Março 2024</SelectItem>
-                </SelectContent>
-              </Select>
+          </div>
+        </header>
+
+        <main className="max-w-[1600px] mx-auto px-6 py-6 space-y-6">
+          <section className="grid grid-cols-3 gap-4">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass rounded-xl p-5">
+              <p className="text-muted-foreground text-sm mb-1">Total Realizado</p>
+              <p className="text-2xl font-semibold">{formatCurrency(totalRealized)}</p>
+              <p className={`text-sm mt-1 ${((totalRealized - totalBudget) / totalBudget * 100) >= 0 ? "status-positive" : "status-negative"}`}>
+                {((totalRealized - totalBudget) / totalBudget * 100) >= 0 ? "+" : ""}
+                {((totalRealized - totalBudget) / totalBudget * 100).toFixed(1)}% vs Orçado
+              </p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="glass rounded-xl p-5">
+              <p className="text-muted-foreground text-sm mb-1">Total Projetado</p>
+              <p className="text-2xl font-semibold">{formatCurrency(totalProjected)}</p>
+              <p className={`text-sm mt-1 ${((totalProjected - totalBudget) / totalBudget * 100) >= 0 ? "status-positive" : "status-negative"}`}>
+                {((totalProjected - totalBudget) / totalBudget * 100) >= 0 ? "+" : ""}
+                {((totalProjected - totalBudget) / totalBudget * 100).toFixed(1)}% vs Orçado
+              </p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass rounded-xl p-5">
+              <p className="text-muted-foreground text-sm mb-1">Total Orçado</p>
+              <p className="text-2xl font-semibold">{formatCurrency(totalBudget)}</p>
+              <p className="text-sm mt-1 text-muted-foreground">Meta do período</p>
+            </motion.div>
+          </section>
+
+          <section className="glass rounded-xl overflow-hidden">
+            <div className="grid grid-cols-6 gap-4 py-3 px-4 bg-card/80 border-b border-border/50 text-xs font-medium text-muted-foreground">
+              <div>Regional / Unidade</div>
+              <div className="text-right">Realizado</div>
+              <div className="text-right">Projetado</div>
+              <div className="text-right">Orçado</div>
+              <div className="text-right">Dif. Real</div>
+              <div className="text-right">Dif. Proj.</div>
             </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-[1600px] mx-auto px-6 py-6 space-y-6">
-        <section className="grid grid-cols-3 gap-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="glass rounded-xl p-5"
-          >
-            <p className="text-muted-foreground text-sm mb-1">Total Realizado</p>
-            <p className="text-2xl font-semibold">{formatCurrency(totalRealized)}</p>
-            <p className={`text-sm mt-1 ${((totalRealized - totalBudget) / totalBudget * 100) >= 0 ? "status-positive" : "status-negative"}`}>
-              {((totalRealized - totalBudget) / totalBudget * 100) >= 0 ? "+" : ""}
-              {((totalRealized - totalBudget) / totalBudget * 100).toFixed(1)}% vs Orçado
-            </p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="glass rounded-xl p-5"
-          >
-            <p className="text-muted-foreground text-sm mb-1">Total Projetado</p>
-            <p className="text-2xl font-semibold">{formatCurrency(totalProjected)}</p>
-            <p className={`text-sm mt-1 ${((totalProjected - totalBudget) / totalBudget * 100) >= 0 ? "status-positive" : "status-negative"}`}>
-              {((totalProjected - totalBudget) / totalBudget * 100) >= 0 ? "+" : ""}
-              {((totalProjected - totalBudget) / totalBudget * 100).toFixed(1)}% vs Orçado
-            </p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="glass rounded-xl p-5"
-          >
-            <p className="text-muted-foreground text-sm mb-1">Total Orçado</p>
-            <p className="text-2xl font-semibold">{formatCurrency(totalBudget)}</p>
-            <p className="text-sm mt-1 text-muted-foreground">Meta do período</p>
-          </motion.div>
-        </section>
-
-        <section className="glass rounded-xl overflow-hidden">
-          <div className="grid grid-cols-6 gap-4 py-3 px-4 bg-card/80 border-b border-border/50 text-xs font-medium text-muted-foreground">
-            <div>Regional / Unidade</div>
-            <div className="text-right">Realizado</div>
-            <div className="text-right">Projetado</div>
-            <div className="text-right">Orçado</div>
-            <div className="text-right">Dif. Real</div>
-            <div className="text-right">Dif. Proj.</div>
-          </div>
-          <div>
-            {regionalData.map((regional, i) => (
-              <RegionalRow key={regional.name} regional={regional} index={i} />
-            ))}
-          </div>
-        </section>
-      </main>
-    </div>
+            <div>
+              {regionalData.map((regional, i) => (
+                <RegionalRow key={regional.name} regional={regional} index={i} />
+              ))}
+            </div>
+          </section>
+        </main>
+      </div>
+    </PageLayout>
   );
 }

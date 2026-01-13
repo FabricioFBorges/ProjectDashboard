@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PageLayout } from "@/components/sidebar-nav";
 import {
   Select,
   SelectContent,
@@ -487,6 +488,7 @@ export default function Dashboard() {
       ];
 
   return (
+    <PageLayout>
     <div className="min-h-screen bg-background">
       <FilterPanel isOpen={filtersOpen} onClose={() => setFiltersOpen(false)} />
       
@@ -603,5 +605,6 @@ export default function Dashboard() {
         </section>
       </main>
     </div>
+    </PageLayout>
   );
 }
